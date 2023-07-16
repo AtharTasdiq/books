@@ -16,9 +16,17 @@ import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 import { setUser } from '@/redux/features/user/userSlice';
+import { FiSend } from 'react-icons/fi';
+import { Textarea } from '@/components/ui/textarea';
+import { ChangeEvent, FormEvent, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { useSearchBookQuery } from '@/redux/features/books/bookApi';
 
 export default function Navbar() {
   const { user } = useAppSelector((state) => state.user);
+  const [inputValue, setInputValue] = useState<string>('');
+  const {data } = useSearchBookQuery(inputValue);
+  console.log(data)
 
   const dispatch = useAppDispatch();
 
@@ -29,6 +37,7 @@ export default function Navbar() {
       dispatch(setUser(null));
     });
   };
+  
 
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
@@ -52,11 +61,6 @@ export default function Navbar() {
               <li>
                 <Button variant="link" asChild>
                   <Link to="/checkout">Checkout</Link>
-                </Button>
-              </li>
-              <li>
-                <Button variant="ghost">
-                  <HiOutlineSearch size="25" />
                 </Button>
               </li>
               <li>

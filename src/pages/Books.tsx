@@ -1,50 +1,56 @@
 import BookCard from '@/components/BookCard';
-import { Label } from '@/components/ui/label';
 import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';import {
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/components/ui/use-toast';
-import { useGetBooksQuery, useSearchBookQuery } from '@/redux/features/books/bookApi';
+import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import {
   setDateRange,
-  toggleState,
   setGenre,
 } from '@/redux/features/books/bookSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { IBook } from '@/types/globalTypes';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
+import { HiOutlineSearch } from 'react-icons/hi';
+import { Button } from '@/components/ui/button';
+import { setInputValue } from '@/redux/features/books/searchSlice';
+import { ChangeEvent } from 'react';
 
 export default function Books() {
   const { data, isLoading, error } = useGetBooksQuery(undefined);
-  //const [inputValue, setInputValue] = useState<string>('');
   
-  //console.log(searchData)
   const handleChange = (data: string) => {
     dispatch(setGenre(data));
-    //setInputValue(data)
   };
 
   const { toast } = useToast();
 
   const { dateRange, status, genre } = useAppSelector((state) => state.book);
+  const { inputValue } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
   //console.log(genre)
-  // const searchData = useSearchBookQuery(genre);
-  // console.log(searchData)
   const handleSlider = (value: number[]) => {
     dispatch(setDateRange(value[0]));
   };
 
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    dispatch(setInputValue(event.target.value));
+  };
   let booksData;
   //console.log(booksData)
-
-  if (status) {
+  if (inputValue) {
+    const regex = new RegExp(inputValue, 'i');
+    booksData = data?.data?.filter(
+      (item: { title: string; genre: string; author: string }) =>
+        regex.test(item.title) || regex.test(item.genre) || regex.test(item.author)
+    );
+  }
+  else if (status) {
     booksData = data?.data?.filter(
       (item: { status: boolean;genre:string; publicationDate: number }) =>
         item.status === true && item.publicationDate <= dateRange
@@ -66,7 +72,7 @@ export default function Books() {
     <div className="grid grid-cols-12 max-w-7xl mx-auto relative ">
       <div className="col-span-3 z mr-10 space-y-5 border rounded-2xl border-gray-200/80 p-5 self-start sticky top-16 h-[calc(100vh-80px)]">
         <div>
-          <h1 className="text-2xl uppercase">Filter</h1>
+          <h1 className="text-2xl uppercase mb-5">Filter Books</h1>
           {/* <div
             onClick={() => dispatch(toggleState())}
             className="flex items-center space-x-2 mt-3"
@@ -90,7 +96,7 @@ export default function Books() {
         </Select>
         </div>
         <div className="space-y-3 ">
-          <h1 className="text-2xl uppercase">Publication Year</h1>
+          <h1 className="text-xl uppercase">Publication Year</h1>
           <div className="max-w-xl">
             <Slider
               defaultValue={[2023]}
@@ -101,6 +107,24 @@ export default function Books() {
             />
           </div>
           <div>From 1900 To {dateRange}</div>
+        </div>
+        <div className='mt-5 pt-5'>
+        <h1 className="text-2xl uppercase mb-5">Search Books</h1>
+          <form className="flex items-center" 
+          //onSubmit={handleSubmit}
+          >
+            <Input
+              className=""
+              onChange={(e)=>handleSearch(e)}
+              // value={inputValue}
+            />
+            <Button 
+            //type="submit" 
+            disabled
+            variant="ghost">
+              <HiOutlineSearch size="25" />
+            </Button>
+          </form>
         </div>
       </div>
       <div className="col-span-9 grid grid-cols-3 gap-10 pb-20">

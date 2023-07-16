@@ -25,14 +25,17 @@ export default function BookDetails() {
         toast({
           description: 'Book Deleted Successfully',
         });
+        // dispatch(removeBook(id));
+        window.location.reload();
         navigate('/books');
-       
+        
+        refetch()
       })
       .catch((error: any) => {
         console.error('Error deleting book:', error);
         // Handle error if the deletion fails
       });
-  }, [deleteBookMutation, id]);
+  }, [deleteBookMutation, id, refetch]);
 
   const dispatch = useAppDispatch()
 

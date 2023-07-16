@@ -25,6 +25,7 @@ const bookApi = api.injectEndpoints({
         url: `/book/${id}`,
         method: 'DELETE',
       }), 
+      invalidatesTags: [{ type: 'SingleBook', id:"" }],
     }),
     searchBook: builder.query({
       query: (id) => `/books/${id}`,

@@ -13,6 +13,8 @@ const initialState: IBook = {
   id:'',
 };
 
+
+
 const bookSlice = createSlice({
   name: 'book',
   initialState,
@@ -27,9 +29,12 @@ const bookSlice = createSlice({
     setId: (state, action: PayloadAction<string>) => {
       state.id = action.payload;
     },
+    // removeBook: (state, action: PayloadAction<string>) => {
+    //   const bookId = action.payload;
+    // },
   },
 });
 
-export const {  setDateRange, setGenre, setId } = bookSlice.actions;
+export const {  setDateRange, setGenre, setId  } = bookSlice.actions;
 
 export default bookSlice.reducer;

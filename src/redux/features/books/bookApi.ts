@@ -7,7 +7,7 @@ const bookApi = api.injectEndpoints({
     }),
     addBooks: builder.mutation({
       query: ({data}) => ({
-        url: '/books',
+        url: '/book',
         method: 'POST',
         body: data,}) 
     }),

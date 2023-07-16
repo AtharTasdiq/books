@@ -30,7 +30,7 @@ export default function Books() {
 
   const { toast } = useToast();
 
-  const { dateRange, status, genre } = useAppSelector((state) => state.book);
+  const { dateRange, genre } = useAppSelector((state) => state.book);
   const { inputValue } = useAppSelector((state) => state.search);
   const dispatch = useAppDispatch();
   //console.log(genre)
@@ -50,12 +50,13 @@ export default function Books() {
         regex.test(item.title) || regex.test(item.genre) || regex.test(item.author)
     );
   }
-  else if (status) {
-    booksData = data?.data?.filter(
-      (item: { status: boolean;genre:string; publicationDate: number }) =>
-        item.status === true && item.publicationDate <= dateRange
-    );
-  }else if(genre){
+  // else if (status) {
+  //   booksData = data?.data?.filter(
+  //     (item: { status: boolean;genre:string; publicationDate: number }) =>
+  //       item.status === true && item.publicationDate <= dateRange
+  //   );
+  // }
+  else if(genre){
     booksData = data?.data?.filter(
       (item:{genre:string})=>item.genre === genre
     );

@@ -22,10 +22,11 @@ import { setInputValue } from '@/redux/features/books/searchSlice';
 import { ChangeEvent } from 'react';
 
 export default function Books() {
-  const { data, isLoading, error } = useGetBooksQuery(undefined);
+  const { data, isLoading, error,  refetch } = useGetBooksQuery(undefined);
   
   const handleChange = (data: string) => {
     dispatch(setGenre(data));
+    refetch()
   };
 
   const { toast } = useToast();
@@ -58,7 +59,7 @@ export default function Books() {
   // }
   else if(genre){
     booksData = data?.data?.filter(
-      (item:{genre:string})=>item.genre === genre
+      (item:{genre:string})=>item.genre.toLocaleLowerCase() === genre.toLocaleLowerCase()
     );
   } else if (dateRange > 0) {
     booksData = data?.data?.filter(
@@ -81,18 +82,19 @@ export default function Books() {
             <Switch id="in-stock" />
             <Label htmlFor="in-stock">In stock</Label>
           </div> */}
+          <h1 className="text-xl uppercase">Genre</h1>
           <Select
           onValueChange={(value) =>handleChange(value)
           }
         >
           <SelectTrigger>
-            <SelectValue placeholder="Genre" />
+            <SelectValue placeholder="All" />
           </SelectTrigger>
           <SelectContent position="popper">
             <SelectItem value="">All</SelectItem>
             <SelectItem value="fantasy">Fantasy</SelectItem>
             <SelectItem value="action">Action</SelectItem>
-            <SelectItem value="romantic">Romantic</SelectItem>
+            <SelectItem value="mystery">Mystery</SelectItem>
           </SelectContent>
         </Select>
         </div>

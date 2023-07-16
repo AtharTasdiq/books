@@ -60,7 +60,7 @@ export default function Navbar() {
               </li>
               <li>
                 <Button variant="link" asChild>
-                  <Link to="/add-new-books">Add New Books</Link>
+                  <Link to="/add-new-book">Add New Books</Link>
                 </Button>
               </li>
               <li>

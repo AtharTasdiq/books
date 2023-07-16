@@ -27,10 +27,6 @@ export default function BookCard({ book }: IProps) {
         
         <p>Author: {book?.author}</p>
         <p>Genre: {book?.genre}</p>
-        <p>Author: {book?.author}</p>
-        {/* <p className="text-sm">
-          Availability: {book?.status ? 'In stock' : 'Out of stock'}
-        </p> */}
         <p className="text-sm">Published In: {book?.publicationDate}</p>
         <Button variant="default" onClick={() => handleAddBook(book)}>
           Add to cart
